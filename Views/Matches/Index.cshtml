@@ -1,0 +1,111 @@
+@model List<FootballMatches.Models.Match>
+@{
+    ViewData["Title"] = "مباريات اليوم";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center mb-4">مباريات اليوم</h2>
+            
+            <!-- فلاتر البحث -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-4">
+                            <label for="date" class="form-label">التاريخ:</label>
+                            <select name="date" id="date" class="form-select">
+                                @if (ViewBag.SelectedDate == DateTime.Today.AddDays(-1).ToString("yyyy-MM-dd")) {
+                                    <option value="yesterday" selected>أمس</option>
+                                } else {
+                                    <option value="yesterday">أمس</option>
+                                }
+                                @if (ViewBag.SelectedDate == DateTime.Today.ToString("yyyy-MM-dd")) {
+                                    <option value="today" selected>اليوم</option>
+                                } else {
+                                    <option value="today">اليوم</option>
+                                }
+                                @if (ViewBag.SelectedDate == DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")) {
+                                    <option value="tomorrow" selected>غداً</option>
+                                } else {
+                                    <option value="tomorrow">غداً</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="competition" class="form-label">البطولة:</label>
+                            <select name="competition" id="competition" class="form-select">
+                                <option value="">جميع البطولات</option>
+                                @foreach (var comp in ViewBag.Competitions)
+                                {
+                                    if (ViewBag.SelectedCompetition == comp)
+                                    {
+                                        <option value="@comp" selected>@comp</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@comp">@comp</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">بحث</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- عرض المباريات -->
+            @if (Model == null || !Model.Any())
+            {
+                // تم حذف رسالة عدم وجود مباريات وزر الإضافة
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var match in Model)
+                    {
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 border-primary">
+                                <div class="card-body text-center">
+                                    <div class="row align-items-center">
+                                        <div class="col-4">
+                                            <img src="@match.HomeTeamLogo" alt="@match.HomeTeam" class="img-fluid" style="max-height: 60px;" onerror="this.style.display='none'">
+                                            <div class="fw-bold mt-2">@match.HomeTeam</div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="text-muted fs-5">VS</div>
+                                            <div class="text-muted">@match.MatchTime.ToString("HH:mm")</div>
+                                        </div>
+                                        <div class="col-4">
+                                            <img src="@match.AwayTeamLogo" alt="@match.AwayTeam" class="img-fluid" style="max-height: 60px;" onerror="this.style.display='none'">
+                                            <div class="fw-bold mt-2">@match.AwayTeam</div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="small">
+                                        <div><strong>@match.Competition</strong></div>
+                                        <div class="text-muted">@match.Country</div>
+                                        @if (!string.IsNullOrEmpty(match.Channel))
+                                        {
+                                            <div class="text-info">📺 @match.Channel</div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+            <!-- مكان إعلان أسفل الصفحة -->
+            <div class="mt-4">
+                <div class="border p-3 text-center bg-light">
+                    <h6>مكان إعلان أسفل الصفحة</h6>
+                    <p class="text-muted">يمكنك وضع إعلانات هنا</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

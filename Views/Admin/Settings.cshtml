@@ -1,0 +1,164 @@
+@model FootballMatches.Models.AdminUser
+@{
+    ViewData["Title"] = "إعدادات الأدمن";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- رسائل النجاح والخطأ -->
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <!-- معلومات الحساب -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">معلومات الحساب</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>اسم المستخدم:</strong> @Model.Username</p>
+                            <p><strong>الاسم:</strong> @Model.Name</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>البريد الإلكتروني:</strong> @Model.Email</p>
+                            <p><strong>نوع الحساب:</strong> <span class="badge bg-success">مدير النظام</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تغيير كلمة المرور -->
+            <div class="card mb-4">
+                <div class="card-header bg-warning text-white">
+                    <h4 class="mb-0">تغيير كلمة المرور</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="ChangePassword" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="currentPassword" class="form-label fw-bold">كلمة المرور الحالية</label>
+                                    <input type="password" id="currentPassword" name="currentPassword" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="newPassword" class="form-label fw-bold">كلمة المرور الجديدة</label>
+                                    <input type="password" id="newPassword" name="newPassword" class="form-control" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="fas fa-key"></i> تغيير كلمة المرور
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- إحصائيات النظام -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">إحصائيات النظام</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <div class="border rounded p-3">
+                                <h3 class="text-primary">@ViewBag.TotalMatches</h3>
+                                <p class="mb-0">إجمالي المباريات</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="border rounded p-3">
+                                <h3 class="text-success">@ViewBag.TodayMatches</h3>
+                                <p class="mb-0">مباريات اليوم</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="border rounded p-3">
+                                <h3 class="text-warning">@ViewBag.UpcomingMatches</h3>
+                                <p class="mb-0">مباريات قادمة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- روابط سريعة -->
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">روابط سريعة</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <a href="@Url.Action("Dashboard")" class="btn btn-primary w-100">
+                                <i class="fas fa-tachometer-alt"></i> لوحة التحكم
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <a href="@Url.Action("Create")" class="btn btn-success w-100">
+                                <i class="fas fa-plus"></i> إضافة مباراة
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <a href="@Url.Action("Matches")" class="btn btn-info w-100">
+                                <i class="fas fa-list"></i> إدارة المباريات
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4 mb-2">
+                            <a href="@Url.Action("Index", "Home")" class="btn btn-secondary w-100" target="_blank">
+                                <i class="fas fa-external-link-alt"></i> عرض الموقع
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <a href="@Url.Action("Logout")" class="btn btn-danger w-100">
+                                <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- معلومات النظام -->
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0">معلومات النظام</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>إصدار النظام:</strong> 1.0.0</p>
+                            <p><strong>تاريخ التطوير:</strong> 2024</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>آخر تحديث:</strong> @DateTime.Now.ToString("dd/MM/yyyy")</p>
+                            <p><strong>حالة النظام:</strong> <span class="badge bg-success">مستقر</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

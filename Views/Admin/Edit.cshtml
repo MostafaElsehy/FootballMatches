@@ -1,0 +1,158 @@
+@model FootballMatches.Models.MatchViewModel
+@{
+    ViewData["Title"] = "تعديل المباراة";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-warning text-white">
+                    <h4 class="mb-0">تعديل المباراة</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="HomeTeam" class="form-label fw-bold"></label>
+                                    <input asp-for="HomeTeam" class="form-control" placeholder="مثال: الأهلي" />
+                                    <span asp-validation-for="HomeTeam" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="AwayTeam" class="form-label fw-bold"></label>
+                                    <input asp-for="AwayTeam" class="form-control" placeholder="مثال: الزمالك" />
+                                    <span asp-validation-for="AwayTeam" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="HomeTeamLogo" class="form-label fw-bold"></label>
+                                    <input asp-for="HomeTeamLogo" class="form-control" placeholder="رابط شعار الفريق المحلي" />
+                                    <span asp-validation-for="HomeTeamLogo" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="AwayTeamLogo" class="form-label fw-bold"></label>
+                                    <input asp-for="AwayTeamLogo" class="form-control" placeholder="رابط شعار الفريق الضيف" />
+                                    <span asp-validation-for="AwayTeamLogo" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="MatchTime" class="form-label fw-bold"></label>
+                                    <input asp-for="MatchTime" class="form-control" type="datetime-local" value="@(Model.MatchTime.ToString("yyyy-MM-ddTHH:mm"))" />
+                                    <span asp-validation-for="MatchTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Competition" class="form-label fw-bold"></label>
+                                    <input asp-for="Competition" class="form-control" placeholder="مثال: الدوري المصري الممتاز" />
+                                    <span asp-validation-for="Competition" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Country" class="form-label fw-bold"></label>
+                                    <input asp-for="Country" class="form-control" placeholder="مثال: مصر" />
+                                    <span asp-validation-for="Country" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Channel" class="form-label fw-bold"></label>
+                                    <input asp-for="Channel" class="form-control" placeholder="مثال: ON Time Sports" />
+                                    <span asp-validation-for="Channel" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between">
+                                    <a href="@Url.Action("Matches")" class="btn btn-secondary">
+                                        <i class="fas fa-arrow-right"></i> العودة لقائمة المباريات
+                                    </a>
+                                    <button type="submit" class="btn btn-warning">
+                                        <i class="fas fa-save"></i> حفظ التعديلات
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- معاينة المباراة -->
+            <div class="card mt-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">معاينة المباراة</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 text-center">
+                            <div class="mb-3">
+                                @if (!string.IsNullOrEmpty(Model.HomeTeamLogo))
+                                {
+                                    <img src="@Model.HomeTeamLogo" alt="@Model.HomeTeam" class="img-fluid mb-2" style="max-height: 100px;" onerror="this.style.display='none'">
+                                }
+                                <h5 class="fw-bold">@Model.HomeTeam</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <div class="mb-3">
+                                @if (!string.IsNullOrEmpty(Model.AwayTeamLogo))
+                                {
+                                    <img src="@Model.AwayTeamLogo" alt="@Model.AwayTeam" class="img-fluid mb-2" style="max-height: 100px;" onerror="this.style.display='none'">
+                                }
+                                <h5 class="fw-bold">@Model.AwayTeam</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="mb-1"><strong>البطولة:</strong> @Model.Competition</p>
+                        <p class="mb-1"><strong>الدولة:</strong> @Model.Country</p>
+                        <p class="mb-1"><strong>الموعد:</strong> @Model.MatchTime.ToString("dd/MM/yyyy HH:mm")</p>
+                        @if (!string.IsNullOrEmpty(Model.Channel))
+                        {
+                            <p class="mb-0"><strong>القناة:</strong> @Model.Channel</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // تحديث المعاينة عند تغيير البيانات
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input[type="text"], input[type="datetime-local"]');
+            inputs.forEach(input => {
+                input.addEventListener('input', updatePreview);
+            });
+        });
+
+        function updatePreview() {
+            // يمكن إضافة كود لتحديث المعاينة في الوقت الفعلي
+        }
+    </script>
+} 

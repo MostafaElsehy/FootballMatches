@@ -1,0 +1,97 @@
+html {
+  font-size: 14px;
+  direction: rtl;
+  font-family: 'Cairo', Tahoma, Arial, sans-serif;
+  background: #f8f9fa;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+  background: #f8f9fa;
+}
+
+.navbar {
+  background: linear-gradient(90deg, #0d6efd 60%, #0a58ca 100%);
+  box-shadow: 0 2px 8px #0001;
+}
+.navbar .navbar-brand, .navbar .nav-link {
+  color: #fff !important;
+  font-weight: bold;
+}
+.navbar .nav-link.active, .navbar .nav-link:hover {
+  color: #ffe082 !important;
+}
+.navbar .navbar-brand {
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+}
+.navbar-nav {
+  flex-direction: row-reverse;
+}
+.navbar .nav-item {
+  margin-left: 1rem;
+}
+
+.card {
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px #0002;
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 6px 24px #0d6efd33;
+}
+.card-body {
+  background: #fff;
+  border-radius: 1rem;
+}
+
+footer {
+  background: #0d6efd;
+  color: #fff;
+  padding: 1rem 0;
+  margin-top: 2rem;
+  box-shadow: 0 -2px 8px #0001;
+}
+
+.border.bg-light {
+  background: #e3f2fd !important;
+}
+
+h2, h6 {
+  font-family: 'Cairo', Tahoma, Arial, sans-serif;
+}
+
+/* تحسين أزرار النماذج */
+.btn-primary {
+  background: linear-gradient(90deg, #0d6efd 60%, #0a58ca 100%);
+  border: none;
+  font-weight: bold;
+}
+.btn-primary:hover {
+  background: #0a58ca;
+}
+
+/* تحسين رسائل التنبيه */
+.alert-info {
+  background: #e3f2fd;
+  color: #0d6efd;
+  border: none;
+  font-weight: bold;
+}

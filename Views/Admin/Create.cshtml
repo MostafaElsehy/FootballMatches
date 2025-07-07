@@ -1,0 +1,128 @@
+@model FootballMatches.Models.MatchViewModel
+@{
+    ViewData["Title"] = "إضافة مباراة جديدة";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">إضافة مباراة جديدة</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="HomeTeam" class="form-label fw-bold"></label>
+                                    <input asp-for="HomeTeam" class="form-control" placeholder="مثال: الأهلي" />
+                                    <span asp-validation-for="HomeTeam" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="AwayTeam" class="form-label fw-bold"></label>
+                                    <input asp-for="AwayTeam" class="form-control" placeholder="مثال: الزمالك" />
+                                    <span asp-validation-for="AwayTeam" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="HomeTeamLogo" class="form-label fw-bold"></label>
+                                    <input asp-for="HomeTeamLogo" class="form-control" placeholder="رابط شعار الفريق المحلي" />
+                                    <span asp-validation-for="HomeTeamLogo" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="AwayTeamLogo" class="form-label fw-bold"></label>
+                                    <input asp-for="AwayTeamLogo" class="form-control" placeholder="رابط شعار الفريق الضيف" />
+                                    <span asp-validation-for="AwayTeamLogo" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="MatchTime" class="form-label fw-bold"></label>
+                                    <input asp-for="MatchTime" class="form-control" type="datetime-local" value="@(Model.MatchTime.ToString("yyyy-MM-ddTHH:mm"))" />
+                                    <span asp-validation-for="MatchTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Competition" class="form-label fw-bold"></label>
+                                    <input asp-for="Competition" class="form-control" placeholder="مثال: الدوري المصري الممتاز" />
+                                    <span asp-validation-for="Competition" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Country" class="form-label fw-bold"></label>
+                                    <input asp-for="Country" class="form-control" placeholder="مثال: مصر" />
+                                    <span asp-validation-for="Country" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Channel" class="form-label fw-bold"></label>
+                                    <input asp-for="Channel" class="form-control" placeholder="مثال: ON Time Sports" />
+                                    <span asp-validation-for="Channel" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between">
+                                    <a href="@Url.Action("Dashboard")" class="btn btn-secondary">
+                                        <i class="fas fa-arrow-right"></i> العودة للوحة التحكم
+                                    </a>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-save"></i> حفظ المباراة
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- نصائح سريعة -->
+            <div class="card mt-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">نصائح سريعة</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li>يمكنك البحث عن شعارات الفرق على Google أو مواقع مثل Wikipedia</li>
+                        <li>تأكد من صحة رابط الشعار (يجب أن ينتهي بـ .png أو .jpg أو .svg)</li>
+                        <li>الموعد سيظهر للمستخدمين حسب المنطقة الزمنية المحلية</li>
+                        <li>المباريات ستظهر تلقائياً في الصفحة الرئيسية</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // تعيين الوقت الحالي كقيمة افتراضية
+        document.addEventListener('DOMContentLoaded', function() {
+            var now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('MatchTime').value = now.toISOString().slice(0,16);
+        });
+    </script>
+} 

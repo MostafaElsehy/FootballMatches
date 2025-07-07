@@ -1,0 +1,158 @@
+@model List<FootballMatches.Models.Match>
+@{
+    ViewData["Title"] = "إدارة المباريات";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid mt-4">
+    <!-- رسائل النجاح -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- رأس الصفحة -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">إدارة المباريات (@Model.Count مباراة)</h4>
+                    <div>
+                        <a href="@Url.Action("Create")" class="btn btn-success">
+                            <i class="fas fa-plus"></i> إضافة مباراة جديدة
+                        </a>
+                        <a href="@Url.Action("Dashboard")" class="btn btn-light">
+                            <i class="fas fa-arrow-right"></i> العودة للوحة التحكم
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- جدول المباريات -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>الفريق المحلي</th>
+                                        <th>الفريق الضيف</th>
+                                        <th>البطولة</th>
+                                        <th>الدولة</th>
+                                        <th>الموعد</th>
+                                        <th>القناة</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var match in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    @if (!string.IsNullOrEmpty(match.HomeTeamLogo))
+                                                    {
+                                                        <img src="@match.HomeTeamLogo" alt="@match.HomeTeam" class="me-2" style="width: 30px; height: 30px;" onerror="this.style.display='none'">
+                                                    }
+                                                    <span class="fw-bold">@match.HomeTeam</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    @if (!string.IsNullOrEmpty(match.AwayTeamLogo))
+                                                    {
+                                                        <img src="@match.AwayTeamLogo" alt="@match.AwayTeam" class="me-2" style="width: 30px; height: 30px;" onerror="this.style.display='none'">
+                                                    }
+                                                    <span class="fw-bold">@match.AwayTeam</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">@match.Competition</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-secondary">@match.Country</span>
+                                            </td>
+                                            <td>
+                                                @if (match.MatchTime.Date == DateTime.Today)
+                                                {
+                                                    <span class="badge bg-success">اليوم</span>
+                                                }
+                                                else if (match.MatchTime.Date == DateTime.Today.AddDays(1))
+                                                {
+                                                    <span class="badge bg-warning">غداً</span>
+                                                }
+                                                else if (match.MatchTime.Date == DateTime.Today.AddDays(-1))
+                                                {
+                                                    <span class="badge bg-secondary">أمس</span>
+                                                }
+                                                <br>
+                                                <small>@match.MatchTime.ToString("dd/MM/yyyy HH:mm")</small>
+                                            </td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(match.Channel))
+                                                {
+                                                    <span class="badge bg-primary">@match.Channel</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">غير محدد</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                    <a href="@Url.Action("Edit", new { id = match.Id })" class="btn btn-warning" title="تعديل">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <button type="button" class="btn btn-danger" onclick="deleteMatch(@match.Id)" title="حذف">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                    <a href="@Url.Action("Index", "Matches", new { date = match.MatchTime.ToString("yyyy-MM-dd") })" class="btn btn-info" title="عرض في الموقع" target="_blank">
+                                                        <i class="fas fa-external-link-alt"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-5">
+                            <i class="fas fa-futbol fa-3x mb-3"></i>
+                            <h4>لا توجد مباريات مضافة بعد</h4>
+                            <p>ابدأ بإضافة أول مباراة لتراها هنا</p>
+                            <a href="@Url.Action("Create")" class="btn btn-success btn-lg">
+                                <i class="fas fa-plus"></i> إضافة أول مباراة
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- نموذج حذف المباراة -->
+<form id="deleteForm" asp-action="Delete" method="post" style="display: none;">
+    <input type="hidden" id="deleteId" name="id" />
+</form>
+
+<script>
+    function deleteMatch(id) {
+        if (confirm('هل أنت متأكد من حذف هذه المباراة؟\nلا يمكن التراجع عن هذا الإجراء.')) {
+            document.getElementById('deleteId').value = id;
+            document.getElementById('deleteForm').submit();
+        }
+    }
+</script> 

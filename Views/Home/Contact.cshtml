@@ -1,0 +1,21 @@
+@{
+    ViewBag.Title = "اتصل بنا";
+}
+<div class="container mt-4">
+    <h2>اتصل بنا</h2>
+    <form class="mt-3" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">الاسم</label>
+            <input type="text" class="form-control" id="name" name="name" required />
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">البريد الإلكتروني</label>
+            <input type="email" class="form-control" id="email" name="email" required />
+        </div>
+        <div class="mb-3">
+            <label for="message" class="form-label">رسالتك</label>
+            <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">إرسال</button>
+    </form>
+</div> 
